@@ -18,7 +18,7 @@ class EnquiryController extends GetxController {
     try {
       print("??????????????");
       Map<String, String> headers = {
-        'Authorization': 'Bearer 1232|dS1axISdWhS0ZkIX6td8gd8pC4LUE8zvEjGgfa0i',
+        'Authorization': 'Bearer $token',
       };
       final response = await http.get(
         Uri.parse(
@@ -41,6 +41,8 @@ class EnquiryController extends GetxController {
 
       Get.snackbar('${e.toString()}server error', 'error');
       print(e.toString());
+    } finally {
+      isLoading.value = false;
     }
   }
 

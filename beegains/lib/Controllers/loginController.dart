@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ class Logincontroller extends GetxController {
   RxList result = <Loginmodel>[].obs;
   final box = GetStorage();
   RxBool isLoading = false.obs;
+  RxBool apierror = false.obs;
 
   void login(username, password) async {
     isLoading.value = true;
@@ -38,14 +40,20 @@ class Logincontroller extends GetxController {
         Get.toNamed('/enq');
         print("///////////////////");
       } else {
-        Get.snackbar('Login Failed', 'Invalid username or password');
+        apierror.value = true;
+
+        // Get.snackbar('Login Failed', 'Invalid username or password',
+        //     duration: Duration(seconds: 4), backgroundColor: Colors.red);
       }
     } catch (e) {
       // print("///////////////////");
-
-      Get.snackbar(
-          '${e.toString()}Login Failed', 'Invalid username or password');
+      apierror.value = true;
+      Get.snackbar('${e.toString()}Error', 'server not responding',
+          duration: Duration(seconds: 4), backgroundColor: Colors.red);
       print(e.toString());
+    } finally {
+      isLoading.value = false;
+      apierror.value = true;
     }
   }
 }
